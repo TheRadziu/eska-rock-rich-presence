@@ -1,3 +1,6 @@
+### Eska Rock Rich Presence
+## By TheRadziu
+# v1.0.1
 import requests
 import json
 from pypresence import Presence
@@ -17,16 +20,21 @@ def parse_api():
     current_time = now.strftime("%H:%M:%S")
     for songs in json_data:
         if current_time > songs['start_time'][11:-6]:
+            if songs['thumb'] is None:
+                songs['thumb'] = "https://cdn.music.smcloud.net/t/cover/02c59e2d-798d-4e47-9d80-93e451f5b5ed_icon-ROCK-NEW-eska_500x500.png"
             return songs['thumb'], songs['artists'][0]['name'], songs['name']
 
 RPC = Presence(client_id=client_id)
 RPC.connect()
 start_time=time.time()
+last_song = ""
 
-while 1:
+while True:
     RPC.update(large_image=parse_api()[0],
             details=parse_api()[1],
             state=parse_api()[2],
             start=start_time)
-    #print("Currently playing: "+parse_api()[2]+" by "+parse_api()[1])
+    if last_song == "" or last_song != parse_api()[2]:
+        last_song = parse_api()[2]
+        print("Currently playing: "+parse_api()[2]+" by "+parse_api()[1])
     time.sleep(wait_time)
