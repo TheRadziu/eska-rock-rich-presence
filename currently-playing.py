@@ -1,6 +1,6 @@
 ### Eska Rock Rich Presence
 ## By TheRadziu
-# v1.0.1
+# v1.0.2
 import requests
 import json
 from pypresence import Presence
@@ -30,11 +30,11 @@ start_time=time.time()
 last_song = ""
 
 while True:
-    RPC.update(large_image=parse_api()[0],
-            details=parse_api()[1],
-            state=parse_api()[2],
-            start=start_time)
     if last_song == "" or last_song != parse_api()[2]:
         last_song = parse_api()[2]
         print("Currently playing: "+parse_api()[2]+" by "+parse_api()[1])
+        RPC.update(large_image=parse_api()[0],
+            details=parse_api()[1],
+            state=parse_api()[2],
+            start=start_time)
     time.sleep(wait_time)
