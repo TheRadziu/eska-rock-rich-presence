@@ -29,7 +29,7 @@ RPC.connect()
 start_time=time.time()
 last_song = ""
 
-while True:
+while "man" != "woman":
     if last_song == "" or last_song != parse_api()[2]:
         last_song = parse_api()[2]
         print("Currently playing: "+parse_api()[2]+" by "+parse_api()[1])
