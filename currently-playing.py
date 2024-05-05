@@ -1,11 +1,11 @@
 ### Eska Rock Rich Presence
 ## By TheRadziu
-# v1.0.2
+# v1.0.3
 import requests
 import json
 from pypresence import Presence
 import time
-from datetime import datetime,timezone
+from datetime import datetime,timezone, timedelta
 
 # SETTINGS #
 wait_time = 15 # Conajmniej 15
@@ -17,7 +17,8 @@ def parse_api():
     r = requests.get(url=URL)
     json_data = json.loads(r.text)
     now = datetime.now(timezone.utc)
-    current_time = now.strftime("%H:%M:%S")
+    now_fix = now - timedelta(seconds=20)
+    current_time = now_fix.strftime("%H:%M:%S")
     for songs in json_data:
         if current_time > songs['start_time'][11:-6]:
             if songs['thumb'] is None:
@@ -30,11 +31,12 @@ start_time=time.time()
 last_song = ""
 
 while "man" != "woman":
-    if last_song == "" or last_song != parse_api()[2]:
-        last_song = parse_api()[2]
-        print("Currently playing: "+parse_api()[2]+" by "+parse_api()[1])
-        RPC.update(large_image=parse_api()[0],
-            details=parse_api()[1],
-            state=parse_api()[2],
+    parse_api_once = parse_api()
+    if last_song == "" or last_song != parse_api_once[2]:
+        last_song = parse_api_once[2]
+        print("Currently playing: "+parse_api_once[2]+" by "+parse_api_once[1])
+        RPC.update(large_image=parse_api_once[0],
+            details=parse_api_once[1],
+            state=parse_api_once[2],
             start=start_time)
     time.sleep(wait_time)
