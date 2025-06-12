@@ -1,9 +1,9 @@
 ### Eska Rock Rich Presence
 ## By TheRadziu
-# v1.0.4
+# v1.0.5
 import requests
 import json
-from pypresence import Presence
+from pypresence import Presence, ActivityType
 import time
 from datetime import datetime,timezone, timedelta
 
@@ -50,7 +50,9 @@ while "man" != "woman":
     if parse_api_once[2] not in last_3_songs.dict:
         last_3_songs.add_pair(parse_api_once[2], parse_api_once[1])
         print("Currently playing: "+parse_api_once[2]+" by "+parse_api_once[1])
-        RPC.update(large_image=parse_api_once[0],
+        RPC.update(
+        activity_type = ActivityType.LISTENING,
+        large_image=parse_api_once[0],
             details=parse_api_once[1],
             state=parse_api_once[2],
             start=start_time)
